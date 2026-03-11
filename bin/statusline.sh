@@ -88,17 +88,6 @@ color_for_remaining() {
     else printf '%b' "$green"; fi
 }
 
-format_tokens() {
-    local num=$1
-    if (( num >= 1000000 )); then
-        printf "%d.%dm" $(( num / 1000000 )) $(( (num % 1000000) / 100000 ))
-    elif (( num >= 1000 )); then
-        printf "%dk" $(( num / 1000 ))
-    else
-        printf "%d" "$num"
-    fi
-}
-
 format_reset_secs() {
     local diff=$1
     (( diff < 0 )) && diff=0
@@ -291,7 +280,7 @@ if [ "$cfg_rate" != "false" ]; then
                     -H "Content-Type: application/json" \
                     -H "Authorization: Bearer $token" \
                     -H "anthropic-beta: oauth-2025-04-20" \
-                    -H "User-Agent: claude-code/2.1.34" \
+                    -H "User-Agent: claude-code/$(claude --version 2>/dev/null | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1 || echo unknown)" \
                     "https://api.anthropic.com/api/oauth/usage" 2>/dev/null)
                 if [ -n "$response" ] && jq -e '.five_hour' <<< "$response" >/dev/null 2>&1; then
                     echo "$response" > "$cache_file"
@@ -345,8 +334,7 @@ if [ "$cfg_rate" != "false" ]; then
                 extra_reset=$(date -v+1m -v1d +"%b %-d" 2>/dev/null | tr '[:upper:]' '[:lower:]')
                 [ -z "$extra_reset" ] && extra_reset=$(date -d "$(date +%Y-%m-01) +1 month" +"%b %-d" 2>/dev/null | tr '[:upper:]' '[:lower:]')
 
-                rate_lines+="\n${white}extra${reset}   ${extra_bar} ${extra_pct_color}\$${extra_used}${dim}/${reset}${white}\$${extra_limit}${reset}"
-                rate_lines+="\n${dim}resets ${reset}${white}${extra_reset}${reset}"
+                rate_lines+="\n${white}extra${reset}   ${extra_bar} ${extra_pct_color}\$${extra_used}${dim}/${reset}${white}\$${extra_limit}${reset} ${dim}resets${reset} ${white}${extra_reset}${reset}"
             fi
         fi
     fi
