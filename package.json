@@ -1,0 +1,32 @@
+{
+  "name": "ccstatusline",
+  "version": "1.0.0",
+  "description": "A fast, configurable status line for Claude Code with rate limits, cost tracking, and background refresh",
+  "bin": {
+    "ccstatusline": "./bin/install.js"
+  },
+  "files": [
+    "bin/"
+  ],
+  "keywords": [
+    "claude",
+    "claude-code",
+    "statusline",
+    "status-line",
+    "cli",
+    "developer-tools"
+  ],
+  "author": "Yuri Nezdemkovski",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nezdemkovski/ccstatusline.git"
+  },
+  "bugs": {
+    "url": "https://github.com/nezdemkovski/ccstatusline/issues"
+  },
+  "homepage": "https://github.com/nezdemkovski/ccstatusline#readme",
+  "engines": {
+    "node": ">=16"
+  }
+}
